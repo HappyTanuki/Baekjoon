@@ -24,6 +24,10 @@ int* MyClass::getFactorizdPrimeNumbers() {
 		else {
 			i++;
 		}
+		if (i == sqrt(this->number)) {
+			output[number]++;
+			break;
+		}
 	}
 
 	return output;
