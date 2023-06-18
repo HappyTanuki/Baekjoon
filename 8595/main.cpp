@@ -6,7 +6,8 @@ int popStackNumbers(std::stack<int>& stack);
 int main() {
 	std::stack<int> stack;
 	std::string input;
-	int sum = 0, length = 0;
+	long long int sum = 0;
+	int length = 0;
 
 	std::cin >> length;
 	std::cin >> input;
