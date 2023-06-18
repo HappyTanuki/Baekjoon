@@ -34,7 +34,7 @@ int main() {
 	srand(time(NULL));
 	std::string output;
 
-	int length = 30;
+	int length = 50;
 
 	int count = 0;
 
