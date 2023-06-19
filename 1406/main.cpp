@@ -1,48 +1,36 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include <iostream>
-#include <cstdio>
-#include <cstring>
-#include <stack>
-#include <queue>
-
-typedef struct _Instruction {
-	char data[5] = { 0, };
-}InstructionType;
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 int main() {
-	char input[600000];
-	char* inputTop = nullptr;
-	std::queue<InstructionType> instructionQueue;
-	InstructionType instruction;
+	char* input = (char*)calloc(600000, sizeof(char));
+	char* inputTop = (input - 1);
 
-	std::stack<char> stack;
+	char* stack = (char*)calloc(600000, sizeof(char));
+	char* stackTop = (stack - 1);
+
+	char instruction;
 	int intructionCount = 0;
 
-	scanf("%s", input);
+	fscanf(stdin, "%s", input);
 	inputTop = input + (strlen(input) - 1);
 
-	scanf("%d ", &intructionCount);
+	scanf("%d", &intructionCount);
 
+	getchar(); // \n 무시
 	for (int i = 0; i < intructionCount; i++) {
-		fgets(instruction.data, 5, stdin);
-		instruction.data[3] = 0;
-		instructionQueue.push(instruction);
-	}
+		instruction = getchar();
 
-	while (!instructionQueue.empty()) {
-		instruction = instructionQueue.front();
-		instructionQueue.pop();
-
-		switch (instruction.data[0]) {
+		switch (instruction) {
 		case 'L':
 			if (inputTop >= input) {
-				stack.push(*inputTop--);
+				*(++stackTop) = *(inputTop--);
 			}
 			break;
 		case 'D':
-			if (!stack.empty()) {
-				*(++inputTop) = stack.top();
-				stack.pop();
+			if (stackTop >= stack) {
+				*(++inputTop) = *(stackTop--);
 			}
 			break;
 		case 'B':
@@ -50,17 +38,18 @@ int main() {
 				inputTop--;
 			}
 			break;
-		case 'P':
-			*(++inputTop) = instruction.data[2];
+		default:
+			getchar();
+			*(++inputTop) = getchar();
 			break;
 		}
+		getchar(); //\n무시
 	}
 	*(++inputTop) = 0;
 
-	printf("%s", input);
+	fwrite(input, sizeof(char), inputTop - input, stdout);
 
-	while (!stack.empty()) {
-		printf("%c", stack.top());
-		stack.pop();
+	while (stackTop >= stack) {
+		putchar(*stackTop--);
 	}
 }
