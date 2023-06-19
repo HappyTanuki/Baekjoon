@@ -10,19 +10,18 @@ int main() {
 	char* stack = (char*)calloc(600000, sizeof(char));
 	char* stackTop = (stack - 1);
 
-	char instruction;
+	char instruction[5];
 	int intructionCount = 0;
 
 	fscanf(stdin, "%s", input);
 	inputTop = input + (strlen(input) - 1);
 
-	scanf("%d", &intructionCount);
+	scanf("%d\n", &intructionCount);
 
-	getchar(); // \n 무시
 	for (int i = 0; i < intructionCount; i++) {
-		instruction = getchar();
+		fgets(instruction, 5, stdin);
 
-		switch (instruction) {
+		switch (instruction[0]) {
 		case 'L':
 			if (inputTop >= input) {
 				*(++stackTop) = *(inputTop--);
@@ -39,17 +38,14 @@ int main() {
 			}
 			break;
 		default:
-			getchar();
-			*(++inputTop) = getchar();
+			*(++inputTop) = instruction[2];
 			break;
 		}
-		getchar(); //\n무시
+	}
+	while (stackTop >= stack) {
+		*(++inputTop) = *(stackTop--);
 	}
 	*(++inputTop) = 0;
 
 	fwrite(input, sizeof(char), inputTop - input, stdout);
-
-	while (stackTop >= stack) {
-		putchar(*stackTop--);
-	}
 }
