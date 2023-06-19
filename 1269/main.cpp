@@ -34,4 +34,7 @@ int main() {
 		}
 	}
 	std::cout << AMinusB + BMinusA;
+
+	delete[] A;
+	delete[] B;
 }
