@@ -1,55 +1,53 @@
 #include <iostream>
-#include <string>
 #include <cstring>
 #include <stack>
 
 int main() {
-	const char* frula = "FRULA";
-
 	std::string input;
-
-	char* left = nullptr;
-	char* leftTop = nullptr;
-	std::stack<char> right;
-
-	char bomb[36] = { 0, };
+	int inputSize = 0;
+	std::string bomb;
 	int bombSize = 0;
 
-	char* bombPos = nullptr;
+	std::stack<char> stack;
+	std::stack<char> tempStack;
 
 	std::cin >> input;
+	inputSize = input.length();
 	std::cin >> bomb;
+	bombSize = bomb.length();
 
-	left = new char[input.length() + 2];
-	leftTop = left + input.length() - 1;
-	*(leftTop + 1) = '\0';
+	for (int i = 0; i < inputSize; i++) {
+		stack.push(input[i]);
 
-	memcpy(left, input.c_str(), (leftTop - left) + 1);
-
-	bombSize = strlen(bomb);
-
-	do {
-		bombPos = strstr(left, bomb);
-		if (bombPos != nullptr) {
-			while (leftTop >= bombPos) {
-				right.push(*(leftTop));
-				*(leftTop--) = '\0';
+		for (int j = bombSize - 1; j >= 0; j--) {
+			if (stack.top() == bomb[j]) {
+				tempStack.push(stack.top());
+				stack.pop();
 			}
-			for (int i = 0; i < bombSize; i++) {
-				right.pop();
-			}
-			while (!right.empty()) {
-				*(++leftTop) = right.top();
-				right.pop();
+			else {
+				while (!tempStack.empty()) {
+					stack.push(tempStack.top());
+					tempStack.pop();
+				}
+				break;
 			}
 		}
-	} while (bombPos != nullptr);
-	*(++leftTop) = '\0';
+		while (!tempStack.empty()) {
+			tempStack.pop();
+		}
+	}
 
-	if (left > leftTop) {
-		std::cout << frula;
+	if (!stack.empty()) {
+		while (!stack.empty()) {
+			tempStack.push(stack.top());
+			stack.pop();
+		}
+		while (!tempStack.empty()) {
+			putchar(tempStack.top());
+			tempStack.pop();
+		}
 	}
 	else {
-		std::cout << left;
+		std::cout << "FRULA";
 	}
 }
