@@ -3,13 +3,16 @@
 #include <stack>
 
 int main() {
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(0);
+
 	std::string input;
 	int inputSize = 0;
 	std::string bomb;
 	int bombSize = 0;
 
+	std::string output;
 	std::stack<char> stack;
-	std::stack<char> tempStack;
 
 	std::cin >> input;
 	inputSize = input.length();
@@ -17,43 +20,36 @@ int main() {
 	bombSize = bomb.length();
 
 	for (int i = 0; i < inputSize; i++) {
-		stack.push(input[i]);
+		output.push_back(input[i]);
 
 		for (int j = bombSize - 1; j >= 0; j--) {
-			if (!stack.empty()) {
-				if (stack.top() == bomb[j]) {
-					tempStack.push(stack.top());
-					stack.pop();
+			if (!output.empty()) {
+				if (output.back() == bomb[j]) {
+					stack.push(output.back());
+					output.pop_back();
 				}
 				else {
-					while (!tempStack.empty()) {
-						stack.push(tempStack.top());
-						tempStack.pop();
+					while (!stack.empty()) {
+						output.push_back(stack.top());
+						stack.pop();
 					}
 					break;
 				}
 			}
 			else {
-				while (!tempStack.empty()) {
-					stack.push(tempStack.top());
-					tempStack.pop();
+				while (!stack.empty()) {
+					output.push_back(stack.top());
+					stack.pop();
 				}
 			}
 		}
-		while (!tempStack.empty()) {
-			tempStack.pop();
+		while (!stack.empty()) {
+			stack.pop();
 		}
 	}
 
-	if (!stack.empty()) {
-		while (!stack.empty()) {
-			tempStack.push(stack.top());
-			stack.pop();
-		}
-		while (!tempStack.empty()) {
-			putchar(tempStack.top());
-			tempStack.pop();
-		}
+	if (!output.empty()) {
+		std::cout << output;
 	}
 	else {
 		std::cout << "FRULA";
