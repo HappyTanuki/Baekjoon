@@ -20,16 +20,24 @@ int main() {
 		stack.push(input[i]);
 
 		for (int j = bombSize - 1; j >= 0; j--) {
-			if (stack.top() == bomb[j]) {
-				tempStack.push(stack.top());
-				stack.pop();
+			if (!stack.empty()) {
+				if (stack.top() == bomb[j]) {
+					tempStack.push(stack.top());
+					stack.pop();
+				}
+				else {
+					while (!tempStack.empty()) {
+						stack.push(tempStack.top());
+						tempStack.pop();
+					}
+					break;
+				}
 			}
 			else {
 				while (!tempStack.empty()) {
 					stack.push(tempStack.top());
 					tempStack.pop();
 				}
-				break;
 			}
 		}
 		while (!tempStack.empty()) {
