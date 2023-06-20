@@ -1,75 +1,39 @@
 #include <iostream>
-#include <string>
 #include <stack>
-
-int popStackNumbers(std::stack<int>& stack) {
-	int n = 1, sum = 0;
-	while (!stack.empty()) {
-		sum += stack.top() * n;
-		stack.pop();
-		n *= 10;
-	}
-
-	return sum;
-}
-
-int findNumber(std::string input) {
-	std::stack<int> stack;
-	int sum = 0;
-
-	for (char getC : input) {
-		if (isdigit(getC)) {
-			stack.push(getC - '0');
-		}
-		else {
-			sum += popStackNumbers(stack);
-		}
-	}
-	sum += popStackNumbers(stack);
-
-	return sum;
-}
+#include <cmath>
 
 int main() {
-	srand(time(NULL));
-	std::string output;
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(0);
 
-	int length = 50;
-
+	long long int input = 0, n = 1, powered = 0, copy = 0;
 	int count = 0;
+	std::stack<long long int> numbers;
 
-	int sum = 0;
-	int number = 0;
-	int origin = 0;
-	int ret = 0;
-	while (++count) {
-		output = { 0, };
-		number = 0;
-		sum = 0;
-		for (int i = 0; i < length;) {
-			/*
-			for (int j = 0; (j < rand() % 6) && (i < length); j++) {
-				output += rand() % 10 + '0';
-				i++;
+	std::cin >> input;
+
+	do {
+		while (!numbers.empty()) {
+			numbers.pop();
+		}
+		copy = input;
+		n = sqrt(input - count++);
+		while (copy > 0 && n > 0) {
+			powered = pow(n, 2);
+			if ((copy - powered) >= 0) {
+				numbers.push(n);
+				copy -= powered;
 			}
-			*/
-			number = rand() % 1000000;
-			output += std::to_string(number);
-			sum += number;
-			i += std::to_string(number).length();
-			for (int j = 0; (j < rand() % 5 + 1) && (i < length); j++) {
-				output += rand() % 26 + 'a';
-				i++;
+			else {
+				n--;
 			}
 		}
-		ret = findNumber(output);
+	} while (numbers.size() > 4);
 
-		std::cout << "Test case : " << count << std::endl;
-		std::cout << output << "\t" << ret << ' ' << (bool)(ret == sum) << std::endl;
-
-		if (ret != sum) {
-			break;
-		}
+	std::cout << numbers.size() << '\n';
+	while (!numbers.empty()) {
+		std::cout << numbers.top() << ' ';
+		numbers.pop();
 	}
 }
 

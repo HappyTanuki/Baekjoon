@@ -11,14 +11,15 @@ int main() {
 	char* stackTop = (stack - 1);
 
 	char instruction[5];
-	int intructionCount = 0;
+	int instructionCount = 0;
 
 	fscanf(stdin, "%s", input);
 	inputTop = input + (strlen(input) - 1);
 
-	scanf("%d\n", &intructionCount);
+	scanf("%d", &instructionCount);
 
-	for (int i = 0; i < intructionCount; i++) {
+	getchar(); //개행문자 무시
+	for (int i = 0; i < instructionCount; i++) {
 		fgets(instruction, 5, stdin);
 
 		switch (instruction[0]) {
@@ -45,7 +46,7 @@ int main() {
 	while (stackTop >= stack) {
 		*(++inputTop) = *(stackTop--);
 	}
-	*(++inputTop) = 0;
+	*(++inputTop) = '\0';
 
 	fwrite(input, sizeof(char), inputTop - input, stdout);
 }
