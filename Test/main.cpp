@@ -1,41 +1,41 @@
 #include <iostream>
+#include <algorithm>
+#include <cstdlib>
+#include <fstream>
 #include <stack>
 #include <cmath>
 
-int main() {
-	std::ios_base::sync_with_stdio(0);
-	std::cin.tie(0);
+int getDecompositSum(int number) {
+	int numberSum = number;
 
-	long long int input = 0, n = 1, powered = 0, copy = 0;
-	int count = 0;
-	std::stack<long long int> numbers;
-
-	std::cin >> input;
-
-	do {
-		while (!numbers.empty()) {
-			numbers.pop();
-		}
-		copy = input;
-		n = sqrt(input - count++);
-		while (copy > 0 && n > 0) {
-			powered = pow(n, 2);
-			if ((copy - powered) >= 0) {
-				numbers.push(n);
-				copy -= powered;
-			}
-			else {
-				n--;
-			}
-		}
-	} while (numbers.size() > 4);
-
-	std::cout << numbers.size() << '\n';
-	while (!numbers.empty()) {
-		std::cout << numbers.top() << ' ';
-		numbers.pop();
+	while (number != 0) {
+		numberSum += number % 10;
+		number /= 10;
 	}
+
+	return numberSum;
 }
 
+int main() {
+	std::ofstream file;
+	file.open("out.txt");
 
+	int* numbers = new int[1000001];
 
+	for (int i = 1; i < 1000001; i++) {
+		numbers[i] = getDecompositSum(i);
+	}
+
+	file << "i : number" << '\n';
+	for (int i = 1; i < 1000001; i++) {
+		file << "i : " << i << ' ' << numbers[i] << '\n';
+	}
+
+	file << "sorted numbers" << '\n';
+	std::sort(numbers, numbers + 1000001);
+	for (int i = 1; i < 1000001; i++) {
+		file << numbers[i] << '\n';
+	}
+
+	delete[] numbers;
+}
