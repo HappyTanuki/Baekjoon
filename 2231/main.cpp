@@ -18,7 +18,7 @@ int main() {
 
 	std::cin >> decompositSum;
 
-	for (testInt = 1; testInt < 999955; testInt++) {
+	for (testInt = 1; testInt < decompositSum; testInt++) {
 		if (getDecompositSum(testInt) == decompositSum) {
 			break;
 		}
