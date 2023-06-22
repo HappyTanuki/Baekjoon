@@ -13,17 +13,12 @@ int getDecompositSum(int number) {
 }
 
 int main() {
-	char input[10] = { 0, };
-	char output[10] = { 0, };
 	int decompositSum = 0;
 	int testInt = 0;
 
-	//fgets(input, sizeof(input), stdin);
-	//decompositSum = std::stoi(input);
-
 	std::cin >> decompositSum;
 
-	for (testInt = 1; testInt < decompositSum; testInt++) {
+	for (testInt = 1; testInt < 999955; testInt++) {
 		if (getDecompositSum(testInt) == decompositSum) {
 			break;
 		}
@@ -34,7 +29,4 @@ int main() {
 	}
 
 	std::cout << testInt;
-
-	//sprintf_s(output, sizeof(output), "%d", testInt);
-	//fwrite(output, sizeof(char), sizeof(output), stdout);
 }
