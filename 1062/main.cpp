@@ -48,11 +48,14 @@ int main() {
 					else if (0 < i && i <= 5) {
 						j = i + 2;
 					}
-					else if (5 < i && i <= 10) {
+					else if (5 < i && i <= 9) {
 						j = i + 3;
 					}
-					else if (10 < i && i <= 15) {
+					else if (9 < i && i <= 14) {
 						j = i + 4;
+					}
+					else if (14 < i && i <= 21) {
+						j = i + 5;
 					}
 					learnedCharactor |= (1 << j);
 				}
