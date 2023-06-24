@@ -1,64 +1,75 @@
 #include <iostream>
-
-void track(char (*words)[2][15], char charactor, int K, int depth, int count, int& max) {
-	bool found = false;
-
-	if (max < count) {
-		max = count;
-	}
-
-	for (int i = 0; i < 50; i++) {
-		for (int j = 0; j < 15; j++) {
-			if (words[i][0][j] == charactor) {
-				words[i][1][j] = 1;
-			}
-		}
-		for (int j = 0; j < 15; j++) {
-			if (words[i][1][j] == 0) {
-				found = false;
-				break;
-			}
-		}
-		if (found) {
-			count++;
-		}
-		if (depth < K) {
-			for (int i = charactor - 'a'; i < 26; i++) {
-				track(words, charactor + 1, K, depth + 1, count, max);
-			}
-		}
-		if (found) {
-			count--;
-		}
-		for (int j = 0; j < 15; j++) {
-			if (words[i][0][j] == charactor) {
-				words[i][1][j] = 0;
-			}
-		}
-	}
-}
-
-int callTrack(char(*words)[2][15], int K) {
-	int max = 0;
-	track(words, 'a', K, 0, 0, max);
-
-	return max;
-}
+#include <cstring>
+#include <vector>
+#include <algorithm>
 
 int main() {
-	char words[50][2][15] = {0,};
-	char taughtChar[26] = { 0, };
+	char words[50][15] = { 0, };
+	int wordSet[50] = { 0, };
+	int learnedCharactor = 0;
+	int wordCanRead = 0;
+	int maxWordCanRead = 0;
 	int N = 0, K = 0;
 
 	std::cin >> N >> K;
 
-	if (K < 5) {
-		std::cout << 0;
+	for (int i = 0; i < N; i++) {
+		std::cin >> words[i];
+		for (int j = 0; j < strlen(words[i]); j++) {
+			wordSet[i] |= (1 << (words[i][j] - 'a'));
+		}
+		wordSet[i] -= (1 << ('a' - 'a'));
+		wordSet[i] -= (1 << ('c' - 'a'));
+		wordSet[i] -= (1 << ('i' - 'a'));
+		wordSet[i] -= (1 << ('n' - 'a'));
+		wordSet[i] -= (1 << ('t' - 'a'));
+	}
+	
+	if (K >= 5) {
+		std::vector<bool> combination(21, true);
+
+		for (int i = 0; i < 21 - (K-5); i++) {
+			combination[i] = false;
+		}
+
+		do {
+			int j = 0;
+			learnedCharactor = 0;
+			learnedCharactor |= (1 << ('a' - 'a'));
+			learnedCharactor |= (1 << ('c' - 'a'));
+			learnedCharactor |= (1 << ('i' - 'a'));
+			learnedCharactor |= (1 << ('n' - 'a'));
+			learnedCharactor |= (1 << ('t' - 'a'));
+			for (int i = 0; i < 21; i++) {
+				if (combination[i]) {
+					if (0 <= i && i <= 0) {
+						j = i + 1;
+					}
+					else if (0 < i && i <= 5) {
+						j = i + 2;
+					}
+					else if (5 < i && i <= 10) {
+						j = i + 3;
+					}
+					else if (10 < i && i <= 15) {
+						j = i + 4;
+					}
+					learnedCharactor |= (1 << j);
+				}
+			}
+
+			wordCanRead = 0;
+			for (int i = 0; i < N; i++) {
+				if ((wordSet[i] & learnedCharactor) == wordSet[i]) {
+					wordCanRead++;
+				}
+			}
+
+			if (wordCanRead > maxWordCanRead) {
+				maxWordCanRead = wordCanRead;
+			}
+		} while (std::next_permutation(combination.begin(), combination.end()));
 	}
 
-	for (int i = 0; i < N; ++i) {
-		std::cin >> words[i][0];
-	}
-
-	std::cout << callTrack(words, K);
+	std::cout << maxWordCanRead;
 }
