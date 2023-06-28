@@ -1,19 +1,12 @@
 #include <iostream>
 
 int decisionFunc(int length, int* lectures, int lecturesSum, int N, int M) {
-	int max = 0, sum = 0;
-
-	if (lecturesSum > length * M) {
-		return -1;
-	}
+	int sum = 0;
 
 	int j = 0;
 	for (int i = 0; i < M; i++) {
 		sum = 0;
-		for (j = j; j <= N; j++) {
-			if (j >= N) {
-				break;
-			}
+		for (j = j; j < N; j++) {
 			if (sum + lectures[j] <= length) {
 				sum += lectures[j];
 			}
@@ -21,16 +14,13 @@ int decisionFunc(int length, int* lectures, int lecturesSum, int N, int M) {
 				break;
 			}
 		}
-		if (max < sum) {
-			max = sum;
-		}
 	}
 
 	if (j < N) {
 		return -1;
 	}
 	else {
-		return max;
+		return 0;
 	}
 }
 
@@ -44,9 +34,7 @@ int setLength (int start, int end, int *lectures, int lecturesSum, int N, int M,
 	int returnValue = decisionFunc(mid, lectures, lecturesSum, N, M);
 
 	if (returnValue != -1) {
-		if (returnValue < min) {
-			min = returnValue;
-		}
+		min = mid;
 		return setLength(start, mid - 1, lectures, lecturesSum, N, M, min);
 	}
 	else {
