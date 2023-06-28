@@ -17,10 +17,10 @@ int decisionFunc(int length, int* lectures, int lecturesSum, int N, int M) {
 	}
 
 	if (j < N) {
-		return -1;
+		return false;
 	}
 	else {
-		return 0;
+		return true;
 	}
 }
 
@@ -31,9 +31,7 @@ int setLength (int start, int end, int *lectures, int lecturesSum, int N, int M,
 		return 0;
 	}
 
-	int returnValue = decisionFunc(mid, lectures, lecturesSum, N, M);
-
-	if (returnValue != -1) {
+	if (decisionFunc(mid, lectures, lecturesSum, N, M)) {
 		min = mid;
 		return setLength(start, mid - 1, lectures, lecturesSum, N, M, min);
 	}
@@ -49,7 +47,7 @@ int getMinLength(int* lectures, int N, int M) {
 		sum += lectures[i];
 	}
 
-	setLength(0, sum, lectures, sum, N, M, min);
+	setLength((sum / M), sum, lectures, sum, N, M, min);
 
 	return min;
 }
