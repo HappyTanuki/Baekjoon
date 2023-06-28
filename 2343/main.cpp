@@ -3,10 +3,6 @@
 bool decisionFunc(int length, int* lectures, int lecturesSum, int N, int M) {
 	int sum = 0;
 
-	if (lecturesSum > length * M) {
-		return false;
-	}
-
 	int j = 0;
 	for (int i = 0; i < M; i++) {
 		sum = 0;
@@ -21,39 +17,11 @@ bool decisionFunc(int length, int* lectures, int lecturesSum, int N, int M) {
 		}
 	}
 
-	if (j < N - 1) {
+	if (j < N) {
 		return false;
 	}
 	else {
 		return true;
-	}
-}
-
-bool test(int *v, int test, int limit, int N) {
-	int temp = 0;
-	int index = 0;
-	for (int i = 0; i < N; i++) {
-		if (index == limit) {
-			return false;
-		}
-		if (temp + v[i] <= test) {
-			temp += v[i];
-		}
-		else {
-			if (v[i] <= test) {
-				index++;
-				temp = v[i];
-			}
-			else {
-				return false;
-			}
-		}
-	}
-	if (index < limit) {
-		return true;
-	}
-	else {
-		return false;
 	}
 }
 
@@ -64,7 +32,7 @@ int setLength (int start, int end, int *lectures, int lecturesSum, int N, int M,
 		return 0;
 	}
 
-	if (test(lectures, mid, M, N)) {
+	if (decisionFunc(mid, lectures, lecturesSum, N, M)) {
 		min = mid;
 		return setLength(start, mid - 1, lectures, lecturesSum, N, M, min);
 	}
