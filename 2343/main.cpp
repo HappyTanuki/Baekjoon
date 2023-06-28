@@ -1,36 +1,59 @@
 #include <iostream>
 
-int decisionFunc(int length, int* lectures, int lecturesSum, int N, int M) {
-	int max = 0, sum = 0;
+bool decisionFunc(int length, int* lectures, int lecturesSum, int N, int M) {
+	int sum = 0;
 
 	if (lecturesSum > length * M) {
-		return -1;
+		return false;
 	}
 
 	int j = 0;
 	for (int i = 0; i < M; i++) {
 		sum = 0;
-		for (j = j; j <= N; j++) {
-			if (j >= N) {
-				break;
-			}
+		while (j < N) {
 			if (sum + lectures[j] <= length) {
 				sum += lectures[j];
+				j++;
 			}
 			else {
 				break;
 			}
 		}
-		if (max < sum) {
-			max = sum;
-		}
 	}
 
-	if (j < N) {
-		return -1;
+	if (j < N - 1) {
+		return false;
 	}
 	else {
-		return max;
+		return true;
+	}
+}
+
+bool test(int *v, int test, int limit, int N) {
+	int temp = 0;
+	int index = 0;
+	for (int i = 0; i < N; i++) {
+		if (index == limit) {
+			return false;
+		}
+		if (temp + v[i] <= test) {
+			temp += v[i];
+		}
+		else {
+			if (v[i] <= test) {
+				index++;
+				temp = v[i];
+			}
+			else {
+				return false;
+			}
+		}
+	}
+	if (index < limit) {
+		return true;
+	}
+	else {
+		return false;
 	}
 }
 
@@ -41,12 +64,8 @@ int setLength (int start, int end, int *lectures, int lecturesSum, int N, int M,
 		return 0;
 	}
 
-	int returnValue = decisionFunc(mid, lectures, lecturesSum, N, M);
-
-	if (returnValue != -1) {
-		if (returnValue < min) {
-			min = returnValue;
-		}
+	if (test(lectures, mid, M, N)) {
+		min = mid;
 		return setLength(start, mid - 1, lectures, lecturesSum, N, M, min);
 	}
 	else {
@@ -61,7 +80,7 @@ int getMinLength(int* lectures, int N, int M) {
 		sum += lectures[i];
 	}
 
-	setLength(0, sum, lectures, sum, N, M, min);
+	setLength((sum / M), sum, lectures, sum, N, M, min);
 
 	return min;
 }
