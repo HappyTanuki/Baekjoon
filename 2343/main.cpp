@@ -1,15 +1,14 @@
 #include <iostream>
 
-bool decisionFunc(int length, int* lectures, int lecturesSum, int N, int M) {
+int decisionFunc(int length, int* lectures, int lecturesSum, int N, int M) {
 	int sum = 0;
 
 	int j = 0;
 	for (int i = 0; i < M; i++) {
 		sum = 0;
-		while (j < N) {
+		for (j = j; j < N; j++) {
 			if (sum + lectures[j] <= length) {
 				sum += lectures[j];
-				j++;
 			}
 			else {
 				break;
