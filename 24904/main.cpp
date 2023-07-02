@@ -18,12 +18,7 @@ void rect(bool **retVal, Position location, Position size, bool visible) {
 			}
 		}
 	}
-	else if (visible){
-		retVal[location.x][location.y] = true;
-	}
-	else {
-		retVal[location.x][location.y] = false;
-	}
+	retVal[location.x][location.y] = visible;
 }
 
 bool **callRect(Position size) {
@@ -39,6 +34,10 @@ bool **callRect(Position size) {
 }
 
 int main() {
+	std::ios::sync_with_stdio(false);
+	std::cin.tie(nullptr);
+	std::cout.tie(nullptr);
+
 	int N = 0;
 	bool** output;
 
@@ -58,9 +57,6 @@ int main() {
 		std::cout << '\n';
 	}
 
-	for (int i = 0; i < N; i++) {
-		delete[] output[i];
-	}
 	delete[] output;
 	return 0;
 }
