@@ -3,11 +3,11 @@
 #include <fstream>
 #include <algorithm>
 
-int decitionFunc(long long Bk, long long N) {
-	long long count = 0;
-	long long dividedValue = 0;
+int decitionFunc(long Bk, long N) {
+	long count = 0;
+	long dividedValue = 0;
 
-	for (long long i = 1; i <= N; i++) {
+	for (long i = 1; i <= N; i++) {
 		dividedValue = Bk / i;
 		if (dividedValue < N) {
 			count += dividedValue;
@@ -20,8 +20,8 @@ int decitionFunc(long long Bk, long long N) {
 	return count;
 }
 
-int parametricSearch(long long start, long long end, long long k, long long N) {
-	long long mid = (start + end) / 2;
+int parametricSearch(long start, long end, long k, long N) {
+	long mid = (start + end) / 2;
 
 	if (start >= end) {
 		return end;
@@ -36,7 +36,7 @@ int parametricSearch(long long start, long long end, long long k, long long N) {
 }
 
 int main() {
-	long long N = 0, k = 0;
+	long N = 0, k = 0;
 
 	std::cin >> N >> k;
 
