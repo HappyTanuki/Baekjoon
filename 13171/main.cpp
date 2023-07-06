@@ -1,28 +1,28 @@
 #include <iostream>
-#include <unordered_map>
-#include <cmath>
 
-long long int modular(long long int A, long long int B, int C, std::unordered_map<int, long long>& memo) {
-	std::unordered_map<int, long long>::iterator findIter = memo.find(B);
+long long int power(long long int lower, int upper) {
+	long long int value = 1;
 
+	for (int i = 0; i < upper; i++) {
+		value *= lower;
+	}
+
+	return value;
+}
+
+long long int modular(long long int A, long long int B, int C) {
 	if (B == 1) {
 		return A % C;
 	}
-	long long mid = B / 2;
+	if (B == 0) {
+		return 1;
+	}
 
-	if (findIter != memo.end()) {
-		return findIter->second;
-	}
-	else {
-		memo.insert(std::unordered_map<int, long long>::value_type(B, (modular(A, mid, C, memo) * modular(A, B - mid, C, memo)) % C));
-		findIter = memo.find(B);
-		return findIter->second;
-	}
+	return (power(modular(A, B / 2, C), 2) * modular(A, B % 2, C)) % C;
 }
 
 int main() {
 	long long int A = 0, X = 0;
-	std::unordered_map<int, long long int> memo;
 	long long int result = 1;
 
 	std::cin >> A >> X;
@@ -33,7 +33,7 @@ int main() {
 			break;
 		}
 		if (X & 1) {
-			result = ((result % 1000000007) * modular(A, pow(2, i), 1000000007, memo)) % 1000000007;
+			result = ((result % 1000000007) * modular(A, power(2, i), 1000000007)) % 1000000007;
 		}
 
 		X = X >> 1;
