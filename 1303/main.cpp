@@ -11,17 +11,25 @@ int getWarStatus(int row, int col, char** frontLine, bool** counted, int N, int 
 
 	counted[row][col] = true;
 	count++;
-	if (frontLine[row + 1][col] == myTeam && !counted[row + 1][col]) {
-		count += getWarStatus(row + 1, col, frontLine, counted, N, M);
+	if (row != M) {
+		if (frontLine[row + 1][col] == myTeam && !counted[row + 1][col]) {
+			count += getWarStatus(row + 1, col, frontLine, counted, N, M);
+		}
 	}
-	if (frontLine[row - 1][col] == myTeam && !counted[row - 1][col]) {
-		count += getWarStatus(row - 1, col, frontLine, counted, N, M);
+	if (row != 0) {
+		if (frontLine[row - 1][col] == myTeam && !counted[row - 1][col]) {
+			count += getWarStatus(row - 1, col, frontLine, counted, N, M);
+		}
 	}
-	if (frontLine[row][col + 1] == myTeam && !counted[row][col + 1]) {
-		count += getWarStatus(row, col + 1, frontLine, counted, N, M);
+	if (col != N) {
+		if (frontLine[row][col + 1] == myTeam && !counted[row][col + 1]) {
+			count += getWarStatus(row, col + 1, frontLine, counted, N, M);
+		}
 	}
-	if (frontLine[row][col - 1] == myTeam && !counted[row][col - 1]) {
-		count += getWarStatus(row, col - 1, frontLine, counted, N, M);
+	if (col != 0) {
+		if (frontLine[row][col - 1] == myTeam && !counted[row][col - 1]) {
+			count += getWarStatus(row, col - 1, frontLine, counted, N, M);
+		}
 	}
 
 	return count;
