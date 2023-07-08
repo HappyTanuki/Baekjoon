@@ -5,13 +5,13 @@ int getWarStatus(int row, int col, char** frontLine, bool** counted, int N, int 
 	int count = 0;
 	char myTeam = frontLine[row][col];
 
-	if (row < 0 || row > M || col < 0 || col > N) {
+	if (row < 0 || row >= M || col < 0 || col >= N) {
 		return 0;
 	}
 
 	counted[row][col] = true;
 	count++;
-	if (row != M) {
+	if (row != M - 1) {
 		if (frontLine[row + 1][col] == myTeam && !counted[row + 1][col]) {
 			count += getWarStatus(row + 1, col, frontLine, counted, N, M);
 		}
@@ -21,7 +21,7 @@ int getWarStatus(int row, int col, char** frontLine, bool** counted, int N, int 
 			count += getWarStatus(row - 1, col, frontLine, counted, N, M);
 		}
 	}
-	if (col != N) {
+	if (col != N - 1) {
 		if (frontLine[row][col + 1] == myTeam && !counted[row][col + 1]) {
 			count += getWarStatus(row, col + 1, frontLine, counted, N, M);
 		}
@@ -69,6 +69,8 @@ int main() {
 			}
 		}
 	}
+
+	std::cout << allyCount << ' ' << enemyCount;
 
 	for (int i = 0; i < M; ++i) {
 		delete[] frontLine[i];
