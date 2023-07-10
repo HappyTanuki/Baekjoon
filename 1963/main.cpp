@@ -131,6 +131,11 @@ int main() {
 		std::cin >> pn1 >> pn2;
 
 		retVal = bfs(pn1, pn2);
-		std::cout << retVal << '\n';
+		if (retVal == -1) {
+			std::cout << "백준 바보" << '\n';
+		}
+		else {
+			std::cout << retVal << '\n';
+		}
 	}
 }

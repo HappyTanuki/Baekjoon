@@ -138,7 +138,6 @@ int main() {
 			pn2 = primeNumbers[j];
 
 			retVal = bfs(pn1, pn2);
-			std::cout << retVal << '\n';
 			if (retVal == -1) {
 				std::cout << "Impossible " << "pn1 : " << pn1 << " " << "pn2 : " << pn2 << '\n';
 			}
