@@ -1,41 +1,43 @@
 #include <iostream>
 #include <algorithm>
+#include <vector>
 #include <cstdlib>
 #include <fstream>
 #include <stack>
 #include <cmath>
 
-int getDecompositSum(int number) {
-	int numberSum = number;
-
-	while (number != 0) {
-		numberSum += number % 10;
-		number /= 10;
+void getPrimeNum(std::vector<int> &primeNumbers) {
+	int i, j;
+	int root;
+	for (i = 1000; i < 10000; i++) {
+		root = sqrt(i);
+		for (j = root; j > 1; --j) {
+			if (i % j == 0) {
+				break;
+			}
+		}
+		if (j == 1) {
+			primeNumbers.push_back(i);
+		}
 	}
-
-	return numberSum;
 }
 
 int main() {
 	std::ofstream file;
+	int cnt = 0;
 	file.open("out.txt");
 
-	int* numbers = new int[1000001];
+	std::vector<int> primeNumbers;
 
-	for (int i = 1; i < 1000001; i++) {
-		numbers[i] = getDecompositSum(i);
+	getPrimeNum(primeNumbers);
+
+	file << "int primeNumbers[] = { ";
+	for (auto iter = primeNumbers.begin(); iter != primeNumbers.end(); ++iter) {
+		cnt++;
+		file << *iter << ", ";
+		if (cnt % 25 == 0) {
+			file << "\n\t\t\t\t\t   ";
+		}
 	}
-
-	file << "i : number" << '\n';
-	for (int i = 1; i < 1000001; i++) {
-		file << "i : " << i << ' ' << numbers[i] << '\n';
-	}
-
-	file << "sorted numbers" << '\n';
-	std::sort(numbers, numbers + 1000001);
-	for (int i = 1; i < 1000001; i++) {
-		file << numbers[i] << '\n';
-	}
-
-	delete[] numbers;
+	file << " };";
 }
