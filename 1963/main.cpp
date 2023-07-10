@@ -1,6 +1,11 @@
 #include <iostream>
 #include <queue>
 
+struct queueType {
+	int value;
+	int depth;
+};
+
 int primeNumbers[] = { 1009, 1013, 1019, 1021, 1031, 1033, 1039, 1049, 1051, 1061, 1063, 1069, 1087, 1091, 1093, 1097, 1103, 1109, 1117, 1123, 1129, 1151, 1153, 1163, 1171,
 					   1181, 1187, 1193, 1201, 1213, 1217, 1223, 1229, 1231, 1237, 1249, 1259, 1277, 1279, 1283, 1289, 1291, 1297, 1301, 1303, 1307, 1319, 1321, 1327, 1361,
 					   1367, 1373, 1381, 1399, 1409, 1423, 1427, 1429, 1433, 1439, 1447, 1451, 1453, 1459, 1471, 1481, 1483, 1487, 1489, 1493, 1499, 1511, 1523, 1531, 1543,
@@ -48,7 +53,7 @@ int primeNumbers[] = { 1009, 1013, 1019, 1021, 1031, 1033, 1039, 1049, 1051, 106
 bool isItPrime(int key, int start = 0, int end = 1060) {
 	int mid = (start + end) / 2;
 
-	if (start == end){
+	if (start == end) {
 		if (primeNumbers[mid] == key) {
 			return true;
 		}
@@ -65,13 +70,30 @@ bool isItPrime(int key, int start = 0, int end = 1060) {
 	}
 }
 
-int bfs(const int source, const int key, std::queue<int>* queue = new std::queue<int>, bool* visited = new bool[10000]{ false, }, const int depth = 0) {
+int bfs(const int source, const int key, std::queue<queueType>* queue = new std::queue<queueType>, bool* visited = new bool[10000] { false, }) {
+	int depth = 0;
 	int temp = 0;
-	int numbers[4] = { source / 1000, (source / 100) % 10, (source / 10) % 10, source % 10 };
 	int fullNumber = 0;
-	int front = 0;
+	queueType current = { 0, };
 
-	if (source != key) {
+	queue->push({ source, 0 });
+	visited[source] = true;
+
+	while (!queue->empty()) {
+		current = queue->front();
+		queue->pop();
+
+		depth = current.depth + 1;
+
+		if (current.value == key) {
+			delete queue;
+			delete visited;
+
+			return current.depth;
+		}
+
+		int numbers[4] = { current.value / 1000, (current.value / 100) % 10, (current.value / 10) % 10, current.value % 10 };
+
 		for (int pos = 0; pos < 4; pos++) {
 			temp = numbers[pos];
 
@@ -84,44 +106,17 @@ int bfs(const int source, const int key, std::queue<int>* queue = new std::queue
 				fullNumber = numbers[0] * 1000 + numbers[1] * 100 + numbers[2] * 10 + numbers[3];
 
 				if (isItPrime(fullNumber) && !visited[fullNumber]) {
+					queue->push({ fullNumber, depth });
 					visited[fullNumber] = true;
-					queue->push(fullNumber);
 				}
 			}
 
 			numbers[pos] = temp;
 		}
-
-		while (!queue->empty()) {
-			front = queue->front();
-			queue->pop();
-			int retVal = bfs(front, key, queue, visited, depth + 1);
-
-			visited[front] = false;
-
-			if (retVal != -1) {
-				if (depth == 0) {
-					delete queue;
-					delete visited;
-				}
-
-				return retVal;
-			}
-		}
-	}
-	else {
-		if (depth == 0) {
-			delete queue;
-			delete visited;
-		}
-
-		return depth;
 	}
 
-	if (depth == 0) {
-		delete queue;
-		delete visited;
-	}
+	delete queue;
+	delete visited;
 
 	return -1;
 }
@@ -136,11 +131,6 @@ int main() {
 		std::cin >> pn1 >> pn2;
 
 		retVal = bfs(pn1, pn2);
-		if (retVal == -1) {
-			std::cout << "Impossible";
-		}
-		else {
-			std::cout << retVal;
-		}
+		std::cout << retVal << '\n';
 	}
 }
