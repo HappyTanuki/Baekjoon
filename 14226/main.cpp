@@ -19,7 +19,7 @@ int calcLeastTime(const int s) {
 	int CImojiCount = 1;
 	int clipboard = 0;
 	int depth = 0;
-	bool visited[2000] = { false, };
+	bool visited[1001][1001] = { false, };
 	static std::queue<queueType> queue;
 	queueType curInstruction;
 
@@ -46,6 +46,16 @@ int calcLeastTime(const int s) {
 			break;
 		}
 
+		if (CImojiCount > 1000 || clipboard > 1000) {
+			continue;
+		}
+		else if (visited[CImojiCount][clipboard]) {
+			continue;
+		}
+		else {
+			visited[CImojiCount][clipboard] = true;
+		}
+
 		if (CImojiCount == s) {
 			return depth;
 		}
@@ -55,7 +65,7 @@ int calcLeastTime(const int s) {
 		if (clipboard > 0) {
 			queue.push({ CImojiCount, PASTE, clipboard, depth + 1 });
 		}
-		if (CImojiCount > 0) {
+		if (CImojiCount > 1) {
 			queue.push({ CImojiCount, DELETE, clipboard, depth + 1 });
 		}
 	}
@@ -68,4 +78,3 @@ int main() {
 
 	std::cout << calcLeastTime(s);
 }
-
