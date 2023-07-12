@@ -10,7 +10,13 @@ enum {
 };
 
 int bfs(int **map, int N, int M) {
-	bool visited[1000][1000][2] = { false, };
+	bool*** visited = new bool** [N];
+	for (int i = 0; i < N; i++) {
+		visited[i] = new bool* [M];
+		for (int j = 0; j < M; j++) {
+			visited[i][j] = new bool[2] { false, };
+		}
+	}
 	std::queue<std::tuple<int, int, int, bool>> queue;
 	std::tuple<int, int, int, bool> current;
 	int x = 0, y = 0;
@@ -33,6 +39,15 @@ int bfs(int **map, int N, int M) {
 		hammer = std::get<HAMMER>(current);
 
 		if (x == N - 1 && y == M - 1) {
+
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < M; j++) {
+					delete[] visited[i][j];
+				}
+				delete[] visited[i];
+			}
+			delete[] visited;
+
 			return count;
 		}
 
@@ -57,6 +72,14 @@ int bfs(int **map, int N, int M) {
 			}
 		}
 	}
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < M; j++) {
+			delete[] visited[i][j];
+		}
+		delete[] visited[i];
+	}
+	delete[] visited;
 
 	return -1;
 }
